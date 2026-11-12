@@ -8,8 +8,11 @@
 </p>
 
 <p align="center">
-  <img alt="Chrome" src="https://img.shields.io/badge/Chrome-MV3-4285F4?logo=googlechrome&logoColor=white">
-  <img alt="Firefox" src="https://img.shields.io/badge/Firefox-MV2-FF7139?logo=firefoxbrowser&logoColor=white">
+  <a href="https://chromewebstore.google.com/detail/randomwatch/odlemafbmajipdoppggjnonkjjhifphc"><img alt="Get it on the Chrome Web Store" src="https://img.shields.io/badge/Chrome%20Web%20Store-Install-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
+  <a href="https://addons.mozilla.org/firefox/addon/randomwatch/"><img alt="Get it on Firefox Add-ons" src="https://img.shields.io/badge/Firefox%20Add--ons-Install-FF7139?style=for-the-badge&logo=firefoxbrowser&logoColor=white"></a>
+</p>
+
+<p align="center">
   <img alt="React" src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black">
   <img alt="WXT" src="https://img.shields.io/badge/built%20with-WXT-67D55E">
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white">
@@ -46,6 +49,13 @@ There are also custom background images per show, the show page URL for each reg
 | South Park | Paramount+ |
 
 You need your own subscription. RandomWatch only opens episodes in your browser. It does not download, host or unlock any content.
+
+## Install
+
+- **Chrome** (and Edge, Brave, Opera): [Chrome Web Store](https://chromewebstore.google.com/detail/randomwatch/odlemafbmajipdoppggjnonkjjhifphc)
+- **Firefox**: [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/randomwatch/)
+
+Then open the popup and press **Sync all** once while you are signed in to Disney+ and Paramount+.
 
 ## Install from source
 

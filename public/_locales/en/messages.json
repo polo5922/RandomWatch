@@ -1,0 +1,58 @@
+{
+  "extName": { "message": "RandomWatch" },
+  "extDescription": {
+    "message": "Play random episodes of The Simpsons, American Dad, Family Guy and South Park on Disney+ and Paramount+, with no repeats."
+  },
+
+  "show_simpsons": { "message": "The Simpsons" },
+  "show_americandad": { "message": "American Dad" },
+  "show_familyguy": { "message": "Family Guy" },
+  "show_southpark": { "message": "South Park" },
+
+  "tagline": { "message": "A random episode, never repeated" },
+  "options": { "message": "Options" },
+  "surpriseTitle": { "message": "Surprise!" },
+  "surpriseCount": { "message": "$1 episodes from $2 selected show(s)" },
+  "showsHeading": { "message": "Shows" },
+  "syncAll": { "message": "Sync all" },
+  "stopAutoplay": { "message": "Stop autoplay" },
+  "unknownError": { "message": "Unknown error" },
+
+  "surprise": { "message": "Surprise" },
+  "includeInSurprise": { "message": "Include in Surprise" },
+  "episodeCount": { "message": "$1 episodes" },
+  "leftCount": { "message": "$1 left to watch" },
+  "leftTitle": { "message": "Before any episode repeats" },
+  "notSynced": { "message": "Not synced yet" },
+  "randomEpisode": { "message": "Random episode" },
+  "sync": { "message": "Sync" },
+  "syncTitle": { "message": "Fetch the episode list" },
+  "syncing": { "message": "Syncing…" },
+  "syncSeason": { "message": "Season $1…" },
+  "syncSeasonOf": { "message": "Season $1/$2" },
+
+  "playback": { "message": "Playback" },
+  "autoplay": { "message": "Continuous play" },
+  "autoplayDesc": {
+    "message": "When an episode ends, play another random episode instead of the next one."
+  },
+  "showsDesc": {
+    "message": "Leave empty to use the default page (France) and the platform artwork. For another region, paste the show's page URL, then sync again."
+  },
+  "showPage": { "message": "Show page" },
+  "backgroundImage": { "message": "Background image (optional)" },
+  "backgroundPlaceholder": { "message": "https://… (defaults to the show artwork)" },
+  "data": { "message": "Data" },
+  "resetHistory": { "message": "Reset draw history" },
+  "resetHistoryDone": { "message": "History cleared: every episode can come up again." },
+  "clearAll": { "message": "Clear everything" },
+  "clearAllDone": { "message": "Catalogs and history cleared." },
+
+  "noEpisodesSurprise": { "message": "No episodes: sync and select at least one show." },
+  "noEpisodesShow": { "message": "No episodes for $1: run a sync first." },
+  "httpError": { "message": "$1 responded with $2" },
+  "noEpisodesFound": { "message": "No episodes found on $1" },
+  "disneyUnexpectedPage": { "message": "Unexpected Disney+ page (page data not found)" },
+  "disneyNoEpisodeList": { "message": "Episode list not found on the Disney+ page" },
+  "paramountBadUrl": { "message": "Invalid Paramount+ URL (expected …/shows/<show>/)" }
+}

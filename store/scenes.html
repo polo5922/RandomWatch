@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>RandomWatch – store</title>
+    <style>
+      * { box-sizing: border-box; margin: 0; }
+      html, body { background: #09090b; color: #fafafa; font-family: 'Segoe UI', system-ui, sans-serif; overflow: hidden; }
+      .stage { position: relative; overflow: hidden; background: #09090b; }
+      .glow { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.45; }
+      .grain {
+        position: absolute; inset: 0; opacity: 0.5;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 22px 22px;
+      }
+      .brand { display: flex; align-items: center; gap: 14px; }
+      .brand img { filter: drop-shadow(0 0 18px rgba(217, 70, 239, 0.6)); }
+      .brand span { font-weight: 700; letter-spacing: -0.02em; }
+      .kicker {
+        display: inline-flex; gap: 8px; align-items: center; padding: 6px 14px; border-radius: 999px;
+        background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12);
+        font-size: 15px; font-weight: 600; color: #e4e4e7;
+      }
+      .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+      h1 { font-weight: 800; letter-spacing: -0.035em; line-height: 1.04; }
+      h1 em {
+        font-style: normal;
+        background: linear-gradient(90deg, #e879f9, #818cf8);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+      }
+      p.sub { color: #a1a1aa; line-height: 1.5; }
+      .frame {
+        position: absolute; overflow: hidden; border-radius: 22px; background: #09090b;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.9), 0 0 70px -10px rgba(217, 70, 239, 0.45);
+      }
+      .frame iframe { border: 0; display: block; transform-origin: 0 0; background: #09090b; }
+      .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+      .chip {
+        display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 12px;
+        background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); font-size: 16px; color: #e4e4e7;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage" class="stage"></div>
+    <script>
+      const q = new URLSearchParams(location.search);
+      const lang = q.get('lang') || 'en';
+      const scene = q.get('scene') || '1';
+
+      const COLORS = ['#facc15', '#ef4444', '#22c55e', '#3b82f6'];
+      const TEXT = {
+        en: {
+          tagline: 'A random episode, never repeated',
+          platforms: 'Disney+ · Paramount+',
+          chips: ['The Simpsons', 'American Dad', 'Family Guy', 'South Park'],
+          s1: ['A random episode<br><em>in one click</em>', 'Pick a show — or all of them — and let chance choose what you watch tonight.'],
+          s2: ['<em>Surprise</em> mode', 'Mix the shows you tick into one shuffle and jump straight into an episode.'],
+          s3: ['Never the same<br>episode <em>twice</em>', 'A shuffle bag remembers what you have seen: every episode plays once before any can come back.'],
+          s4: ['Your catalog,<br><em>synced automatically</em>', 'Every season is fetched from the public show pages. New episodes show up on their own.'],
+          s5: ['<em>Continuous</em> play', 'When an episode ends, the next one is another random pick instead of the next in line.'],
+          small: 'Random episodes,<br>never repeated',
+          marquee: ['A random episode', 'in one click', 'Disney+ and Paramount+ · Chrome & Firefox'],
+        },
+        fr: {
+          tagline: 'Un épisode au hasard, sans répétition',
+          platforms: 'Disney+ · Paramount+',
+          chips: ['Les Simpson', 'American Dad', 'Les Griffin', 'South Park'],
+          s1: ['Un épisode au hasard<br><em>en un clic</em>', 'Choisis une série, ou toutes, et laisse le hasard décider de ce que tu regardes ce soir.'],
+          s2: ['Mode <em>Surprise</em>', 'Mélange les séries cochées dans un seul tirage et lance directement un épisode.'],
+          s3: ['Jamais deux fois<br>le <em>même épisode</em>', 'Un sac mélangé retient ce que tu as vu : chaque épisode passe une fois avant de pouvoir revenir.'],
+          s4: ['Ton catalogue,<br><em>synchronisé tout seul</em>', 'Toutes les saisons sont récupérées depuis les pages publiques des séries. Les nouveaux épisodes arrivent seuls.'],
+          s5: ['Lecture <em>continue</em>', "À la fin d'un épisode, le suivant est un nouveau tirage au lieu de l'épisode suivant."],
+          small: 'Des épisodes au hasard,<br>sans répétition',
+          marquee: ['Un épisode au hasard', 'en un clic', 'Disney+ et Paramount+ · Chrome et Firefox'],
+        },
+      }[lang];
+
+      const stage = document.getElementById('stage');
+      const el = (html) => {
+        const t = document.createElement('template');
+        t.innerHTML = html.trim();
+        return t.content.firstElementChild;
+      };
+      const size = (w, h) => Object.assign(stage.style, { width: w + 'px', height: h + 'px' });
+      const glows = (list) =>
+        list.forEach(([x, y, r, c, o]) =>
+          stage.append(el(`<div class="glow" style="left:${x - r}px;top:${y - r}px;width:${2 * r}px;height:${2 * r}px;background:${c};opacity:${o ?? 0.45}"></div>`)),
+        );
+      const dots = () => COLORS.map((c) => `<span class="dot" style="background:${c};box-shadow:0 0 10px ${c}"></span>`).join('');
+
+      /** Popup réelle de l'extension dans un cadre, mise à l'échelle. */
+      function popupFrame({ x, y, scale, state = 'default', page = 'popup', w = 380, h = 900, after }) {
+        const frame = el(`<div class="frame" style="left:${x}px;top:${y}px;width:${w * scale}px;height:${h * scale}px"></div>`);
+        const iframe = el(`<iframe src="/${page}.html?lang=${lang}&state=${state}&art=${new URLSearchParams(location.search).get('art') || ''}" style="width:${w}px;height:${h}px;transform:scale(${scale})"></iframe>`);
+        frame.append(iframe);
+        stage.append(frame);
+        window.__ready = new Promise((resolve) => {
+          iframe.addEventListener('load', async () => {
+            const doc = iframe.contentDocument;
+            for (let i = 0; i < 100 && !doc.querySelector('main, h1'); i++) await new Promise((r) => setTimeout(r, 50));
+            if (page === 'popup') {
+              const height = doc.querySelector('main').scrollHeight;
+              iframe.style.height = height + 'px';
+              frame.style.height = height * scale + 'px';
+              frame.style.top = y - (height * scale) / 2 + 'px';
+            }
+            if (after) await after(doc);
+            // Fonds abstraits passés comme images perso : on vide leur champ dans les options.
+            doc.querySelectorAll('input').forEach((i) => i.value.startsWith('data:') && (i.value = ''));
+            // Laisse le temps aux images de fond de charger.
+            await Promise.all([...doc.images].map((im) => (im.complete ? 0 : new Promise((r) => (im.onload = im.onerror = r)))));
+            await new Promise((r) => setTimeout(r, 400));
+            resolve();
+          });
+        });
+      }
+
+      function textBlock(key, { x = 96, y, width = 560, size = 64 }) {
+        const [title, sub] = TEXT[key];
+        stage.append(
+          el(`<div style="position:absolute;left:${x}px;top:${y}px;width:${width}px;display:flex;flex-direction:column;gap:26px">
+            <div class="brand"><img src="/store/logo.svg" width="46" height="46"><span style="font-size:24px">RandomWatch</span></div>
+            <h1 style="font-size:${size}px">${title}</h1>
+            <p class="sub" style="font-size:22px">${sub}</p>
+            <div class="kicker">${dots()}<span style="margin-left:4px">${TEXT.platforms}</span></div>
+          </div>`),
+        );
+      }
+
+      const clickSurprise = async (doc) => {
+        doc.querySelector('main > button').click();
+        await new Promise((r) => setTimeout(r, 300));
+      };
+
+      const screens = {
+        1: () => { glows([[1000, 200, 320, '#d946ef'], [1150, 700, 260, '#4f46e5'], [80, 820, 260, '#facc15', 0.18]]); textBlock('s1', { y: 170 }); popupFrame({ x: 800, y: 400, scale: 0.84 }); },
+        2: () => { glows([[950, 300, 340, '#d946ef', 0.55], [200, 750, 260, '#4f46e5', 0.3]]); textBlock('s2', { y: 210 }); popupFrame({ x: 800, y: 400, scale: 0.84, after: clickSurprise }); },
+        3: () => { glows([[1000, 160, 300, '#22c55e', 0.3], [1100, 700, 300, '#ef4444', 0.3], [150, 120, 240, '#d946ef', 0.25]]); textBlock('s3', { y: 190 }); popupFrame({ x: 800, y: 400, scale: 0.84, state: 'progress' }); },
+        4: () => { glows([[1050, 650, 330, '#3b82f6', 0.55], [900, 120, 260, '#d946ef', 0.3]]); textBlock('s4', { y: 190 }); popupFrame({ x: 800, y: 400, scale: 0.84, state: 'syncing' }); },
+        5: () => {
+          glows([[950, 300, 360, '#d946ef', 0.4], [150, 750, 260, '#4f46e5', 0.35]]);
+          textBlock('s5', { y: 210, width: 470, size: 60 });
+          popupFrame({ x: 610, y: 120, scale: 0.56, page: 'options', w: 1100, h: 1000 });
+        },
+        small: () => {
+          glows([[360, 40, 200, '#d946ef', 0.55], [60, 260, 160, '#4f46e5', 0.5]]);
+          stage.append(el(`<div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:16px;padding:0 36px">
+            <div class="brand"><img src="/store/logo.svg" width="64" height="64"><span style="font-size:34px">RandomWatch</span></div>
+            <div style="font-size:24px;font-weight:700;line-height:1.2;letter-spacing:-0.01em">${TEXT.small}</div>
+            <div style="display:flex;gap:8px">${dots()}</div>
+          </div>`));
+        },
+        marquee: () => {
+          glows([[1150, 120, 340, '#d946ef', 0.55], [1300, 520, 280, '#4f46e5', 0.55], [120, 560, 220, '#facc15', 0.15]]);
+          const [a, b, c] = TEXT.marquee;
+          stage.append(el(`<div style="position:absolute;left:110px;top:0;bottom:0;width:780px;display:flex;flex-direction:column;justify-content:center;gap:26px">
+            <div class="brand"><img src="/store/logo.svg" width="58" height="58"><span style="font-size:30px">RandomWatch</span></div>
+            <h1 style="font-size:76px">${a}<br><em>${b}</em></h1>
+            <div class="kicker" style="align-self:flex-start">${dots()}<span style="margin-left:4px">${c}</span></div>
+          </div>`));
+          stage.append(el(`<img src="/store/logo.svg" style="position:absolute;right:150px;top:110px;width:340px;height:340px;transform:rotate(-8deg);filter:drop-shadow(0 0 60px rgba(217,70,239,.7))">`));
+        },
+      };
+
+      const dims = { small: [440, 280], marquee: [1400, 560] }[scene] ?? [1280, 800];
+      size(...dims);
+      stage.append(el('<div class="grain"></div>'));
+      window.__ready = Promise.resolve();
+      screens[scene]();
+    </script>
+  </body>
+</html>

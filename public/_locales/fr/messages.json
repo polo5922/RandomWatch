@@ -1,0 +1,58 @@
+{
+  "extName": { "message": "RandomWatch" },
+  "extDescription": {
+    "message": "Lance des épisodes au hasard des Simpson, American Dad, Les Griffin et South Park sur Disney+ et Paramount+, sans répétition."
+  },
+
+  "show_simpsons": { "message": "Les Simpson" },
+  "show_americandad": { "message": "American Dad" },
+  "show_familyguy": { "message": "Les Griffin" },
+  "show_southpark": { "message": "South Park" },
+
+  "tagline": { "message": "Un épisode au hasard, sans répétition" },
+  "options": { "message": "Options" },
+  "surpriseTitle": { "message": "Surprise !" },
+  "surpriseCount": { "message": "$1 épisodes parmi $2 série(s) cochée(s)" },
+  "showsHeading": { "message": "Séries" },
+  "syncAll": { "message": "Tout synchroniser" },
+  "stopAutoplay": { "message": "Arrêter l'enchaînement" },
+  "unknownError": { "message": "Erreur inconnue" },
+
+  "surprise": { "message": "Surprise" },
+  "includeInSurprise": { "message": "Inclure dans Surprise" },
+  "episodeCount": { "message": "$1 épisodes" },
+  "leftCount": { "message": "$1 à découvrir" },
+  "leftTitle": { "message": "Avant de tout revoir" },
+  "notSynced": { "message": "Pas encore synchronisée" },
+  "randomEpisode": { "message": "Épisode aléatoire" },
+  "sync": { "message": "Synchro" },
+  "syncTitle": { "message": "Récupérer la liste des épisodes" },
+  "syncing": { "message": "Synchro…" },
+  "syncSeason": { "message": "Saison $1…" },
+  "syncSeasonOf": { "message": "Saison $1/$2" },
+
+  "playback": { "message": "Lecture" },
+  "autoplay": { "message": "Lecture continue" },
+  "autoplayDesc": {
+    "message": "À la fin d'un épisode, enchaîne sur un nouvel épisode aléatoire au lieu de l'épisode suivant."
+  },
+  "showsDesc": {
+    "message": "Laisse vide pour utiliser la page par défaut (France) et le visuel de la série. Pour une autre région, colle l'adresse de la page de la série, puis relance la synchro."
+  },
+  "showPage": { "message": "Page de la série" },
+  "backgroundImage": { "message": "Image de fond (optionnel)" },
+  "backgroundPlaceholder": { "message": "https://… (sinon le visuel de la série)" },
+  "data": { "message": "Données" },
+  "resetHistory": { "message": "Réinitialiser l'historique des tirages" },
+  "resetHistoryDone": { "message": "Historique effacé : tous les épisodes peuvent de nouveau sortir." },
+  "clearAll": { "message": "Tout effacer" },
+  "clearAllDone": { "message": "Catalogues et historique effacés." },
+
+  "noEpisodesSurprise": { "message": "Aucun épisode : synchronise et coche au moins une série." },
+  "noEpisodesShow": { "message": "Aucun épisode pour $1 : lance d'abord une synchronisation." },
+  "httpError": { "message": "$1 a répondu $2" },
+  "noEpisodesFound": { "message": "Aucun épisode trouvé sur $1" },
+  "disneyUnexpectedPage": { "message": "Page Disney+ inattendue (données de la page introuvables)" },
+  "disneyNoEpisodeList": { "message": "Liste des épisodes introuvable sur la page Disney+" },
+  "paramountBadUrl": { "message": "URL Paramount+ invalide (attendu : …/shows/<série>/)" }
+}
